@@ -6,8 +6,6 @@ TODO:
 * Turn on and off fade effect
 * Upload as a lamda (cdk??)
 * Sounds? 
-* https://www.rockyourcode.com/run-docker-nginx-as-non-root-user/
-
 
 
 Conways game of life [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)  
@@ -174,13 +172,13 @@ open https://github-of-life.herokuapp.com/
 * https://getbootstrap.com/docs/5.0/getting-started/parcel/
 
 
-https://github.com/GoogleContainerTools/container-structure-test
-https://github.com/chrisguest75/docker_build_examples/tree/master/33_label_metadata
+* https://github.com/GoogleContainerTools/container-structure-test
+* https://github.com/chrisguest75/docker_build_examples/tree/master/33_label_metadata
 
-https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#onpushpull_requestpaths
+* https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#onpushpull_requestpaths
 
-https://www.npmjs.com/package/jest-junit
+* https://www.npmjs.com/package/jest-junit
 
-Heroku github actions
-https://dev.to/heroku/deploying-to-heroku-from-github-actions-29ej
-https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md
+* Heroku github actions https://dev.to/heroku/deploying-to-heroku-from-github-actions-29ej
+
+* https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md
