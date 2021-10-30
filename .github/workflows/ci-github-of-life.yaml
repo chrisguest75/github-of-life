@@ -1,14 +1,12 @@
 name: Github of Life CI
 
-# add hadolint, dockle, and hadolint.
-
 on:
   push:
     branches: 
       - '*'
       #- '!master'   # excludes master
     paths:
-      - './**'
+      - '**'
       - '.github/workflows/ci-github-of-life.yaml'
 
   pull_request:
@@ -16,7 +14,7 @@ on:
       - '*' 
       #- '!master'   # excludes master
     paths:
-      - './**'
+      - '**'
       - '.github/workflows/ci-github-of-life.yaml'
 
 jobs:
