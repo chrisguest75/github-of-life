@@ -19,7 +19,7 @@ on:
 
 jobs:
   build-test:
-    name: "Build, test, deploy 14_github_of_life"  
+    name: "Build, test, deploy github_of_life"  
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -30,7 +30,7 @@ jobs:
         export COMMITID="${{ github.sha }}"
         cat ./src/build.template | envsubst > ./src/build.json          
 
-    - name: Build and test the 14_github_of_life Docker image
+    - name: Build and test the github_of_life Docker image
       run: |
         docker build --target BUILDER --label "org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')" --label "org.opencontainers.image.version=${{ github.sha }}" --label "org.opencontainers.image.url=$(git remote get-url origin)" --no-cache -t docker.pkg.github.com/${{ github.repository }}/github-of-life-build:${{ github.sha }} -f Dockerfile .
 
@@ -75,7 +75,7 @@ jobs:
       uses: plexsystems/container-structure-test-action@v0.1.0
       with:
         image: docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
-        config: ./14_github_of_life/container-structure-tests.yaml
+        config: ./container-structure-tests.yaml
 
     # - name: Docker scan
     #   run: |
