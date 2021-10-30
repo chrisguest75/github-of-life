@@ -19,6 +19,16 @@ let file_selected = "./cells/gosperglidergun.cells";
 let initial_cells: Array<Array<number>> = [];
 const cellfile = new CellFile();
 
+function goFullScreen(){
+  var canvas = document.getElementById("github");
+  if(canvas.requestFullScreen)
+      canvas.requestFullScreen();
+  else if(canvas.webkitRequestFullScreen)
+      canvas.webkitRequestFullScreen();
+  else if(canvas.mozRequestFullScreen)
+      canvas.mozRequestFullScreen();
+}
+
 async function create() {
   const buildnumber = document.getElementById("buildnumber");
   buildnumber.innerHTML = "commitid:" + build.build
@@ -34,6 +44,11 @@ async function create() {
   select.onchange = function (e) {
     file_selected = "./cells/" + e.target.value + ".cells";
   };
+
+  const canvas = document.getElementById("github");
+  canvas.addEventListener('click', () => {
+    goFullScreen();
+  })
 
   setInterval(update, 60);
 }
