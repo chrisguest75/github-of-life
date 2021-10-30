@@ -20,7 +20,7 @@ let initial_cells: Array<Array<number>> = [];
 const cellfile = new CellFile();
 
 function goFullScreen(){
-  var canvas = document.getElementById("github");
+  const canvas = document.getElementById("github");
   if(canvas.requestFullScreen)
       canvas.requestFullScreen();
   else if(canvas.webkitRequestFullScreen)
