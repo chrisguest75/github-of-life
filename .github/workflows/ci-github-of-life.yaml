@@ -1,0 +1,139 @@
+name: Github of Life CI
+
+# add hadolint, dockle, and hadolint.
+
+on:
+  push:
+    branches: 
+      - '*'
+      #- '!master'   # excludes master
+    paths:
+      - './**'
+      - '.github/workflows/ci-github-of-life.yaml'
+
+  pull_request:
+    branches:  
+      - '*' 
+      #- '!master'   # excludes master
+    paths:
+      - './**'
+      - '.github/workflows/ci-github-of-life.yaml'
+
+jobs:
+  build-test:
+    name: "Build, test, deploy 14_github_of_life"  
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Create build.json
+      run: | 
+        export COMMITID="${{ github.sha }}"
+        cat ./src/build.template | envsubst > ./src/build.json          
+
+    - name: Build and test the 14_github_of_life Docker image
+      run: |
+        docker build --target BUILDER --label "org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')" --label "org.opencontainers.image.version=${{ github.sha }}" --label "org.opencontainers.image.url=$(git remote get-url origin)" --no-cache -t docker.pkg.github.com/${{ github.repository }}/github-of-life-build:${{ github.sha }} -f Dockerfile .
+
+    - name: Get the test results from container
+      run: | 
+        docker create --name test_githuboflife docker.pkg.github.com/${{ github.repository }}/github-of-life-build:${{ github.sha }}
+        mkdir -p ./test/results
+        ls -aR ./test/results
+        docker cp test_githuboflife:/scratch/junit.xml ./test/results
+        docker rm test_githuboflife
+        ls -aR ./test/results
+
+    - name: Copy results to artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: ./test/results 
+
+    - name: Build production image
+      run: |
+        docker build --target PRODUCTION --label "org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')" --label "org.opencontainers.image.version=${{ github.sha }}" --label "org.opencontainers.image.url=$(git remote get-url origin)" --no-cache -t docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }} -f Dockerfile .
+
+    - name: Linting hadolint, dockle and dive
+      run: |
+        echo "Installing HADOLINT"
+        brew install hadolint        
+        echo "Running HADOLINT"
+        hadolint ./Dockerfile
+        echo "COMPLETE exitcode:$?"
+        echo "Installing DOCKLE"
+        brew install goodwithtech/r/dockle
+        echo "Running DOCKLE"
+        dockle docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
+        echo "COMPLETE exitcode:$?"
+        echo "Installing DIVE"
+        brew install dive
+        echo "Running DIVE"
+        dive docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }} --ci
+        echo "COMPLETE exitcode:$?"
+
+    - name: Run container-structure-tests
+      uses: plexsystems/container-structure-test-action@v0.1.0
+      with:
+        image: docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
+        config: ./14_github_of_life/container-structure-tests.yaml
+
+    # - name: Docker scan
+    #   run: |
+    #     docker scan docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
+
+    # - name: Docker Grype
+    #   run: |
+    #     brew tap anchore/grype
+    #     brew install grype      
+    #     grype -o json docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
+
+    # this can only be enabled in public repo
+    - name: Scan image using grype
+      uses: anchore/scan-action@v3
+      id: scan
+      with:
+        image: docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
+        acs-report-enable: true
+        severity-cutoff: critical
+        fail-build: false
+
+    - name: Upload Anchore Grype scan SARIF report
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarif }}
+
+    - name: Push to Heroku and release
+      env: 
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: | 
+        heroku container:login 
+        docker tag docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }} registry.heroku.com/github-of-life/web
+        docker push registry.heroku.com/github-of-life/web
+        heroku container:release web -a github-of-life
+        
+  publish-test-results:
+    name: "Publish test results"
+    needs: build-test
+    runs-on: ubuntu-latest
+    # the build-and-test job might be skipped, we don't need to run this job then
+    if: success() || failure()
+
+    steps:
+      - name: Download results
+        uses: actions/download-artifact@v2
+        with:
+          name: test-results
+          path: ./test/results 
+
+      - name: Get the test results from container
+        run: | 
+          ls -aR ./test/results
+
+      - name: Publish results
+        uses: EnricoMi/publish-unit-test-result-action@v1.23
+        with:
+          check_name: Test results
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          files: ./test/results/*.xml

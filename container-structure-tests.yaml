@@ -1,0 +1,43 @@
+schemaVersion: '2.0.0' # Make sure to test the latest schema version
+
+# commandTests:
+#   - name: "turn"
+#     command: "/turn/generate.sh"
+#     args: ["--help"]
+#     expectedOutput: ["^Start.*"]
+#     exitCode: 1
+
+fileExistenceTests:
+  #*************************************
+  # Files that should not be copied over
+  #*************************************
+    
+- name: 'Dockerfile'
+  path: '/work/Dockerfile'
+  shouldExist: false
+
+  #*************************************
+  # Required files
+  #*************************************
+- name: 'bootstrap.sh'
+  path: '/work/bootstrap.sh'
+  shouldExist: true
+  isExecutableBy: 'owner'
+
+
+metadataTest:
+  entrypoint: ["/docker-entrypoint.sh"]
+  workdir: "/usr/share/nginx/html"  
+  labels: 
+    - key: "dockerfile.baseimage"
+      value: 'nginx:1.21.[0-9]*'
+      isRegex: true
+    - key: "org.opencontainers.image.created"
+      value: '.*'
+      isRegex: true
+    - key: "org.opencontainers.image.version"
+      value: '.*'      
+      isRegex: true
+    - key: "org.opencontainers.image.url"
+      value: '.*'           
+      isRegex: true

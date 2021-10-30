@@ -1,0 +1,4 @@
+# don't use HEALTHCHECK
+CIS-DI-0006
+# use latest tag
+DKL-DI-0006
