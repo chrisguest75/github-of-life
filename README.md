@@ -1,6 +1,8 @@
 # README
 Demonstrate a full screen game of life using github like tiles. 
 
+NOTE: This was based on a folder from this repo https://github.com/chrisguest75/bootstrap
+
 TODO:
 * Overlay navigation for initial conditions
 * Turn on and off fade effect
