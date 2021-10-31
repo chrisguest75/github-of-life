@@ -1,4 +1,4 @@
-name: Github of Life CI
+name: Github of Life - Master
 
 on:
   push:
