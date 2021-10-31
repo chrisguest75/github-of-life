@@ -1,16 +1,16 @@
-name: Github of Life CI
+name: Github of Life - CI
 
 on:
   push:
     branches: 
-      - '!master'   # excludes master
+      - '!main'   # excludes main
     paths:
       - '**'
       - '.github/workflows/ci-github-of-life.yaml'
 
   pull_request:
     branches:  
-      - '!master'   # excludes master
+      - '!main'   # excludes main
     paths:
       - '**'
       - '.github/workflows/ci-github-of-life.yaml'

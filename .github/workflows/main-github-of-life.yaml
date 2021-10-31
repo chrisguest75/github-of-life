@@ -1,12 +1,12 @@
-name: Github of Life - Master
+name: Github of Life - Main
 
 on:
   push:
     branches: 
-      - 'master'
+      - 'main'
     paths:
       - '**'
-      - '.github/workflows/master-github-of-life.yaml'
+      - '.github/workflows/main-github-of-life.yaml'
 
 jobs:
   build-test:
