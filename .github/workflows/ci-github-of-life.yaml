@@ -3,6 +3,7 @@ name: Github of Life - CI
 on:
   push:
     branches: 
+      - '*'
       - '!main'   # excludes main
     paths:
       - '**'
@@ -10,6 +11,7 @@ on:
 
   pull_request:
     branches:  
+      - '*'
       - '!main'   # excludes main
     paths:
       - '**'
