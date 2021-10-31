@@ -107,32 +107,25 @@ async function update() {
     const context = canvas.getContext("2d");
     const cw = columns;
     const ch = rows;
+
+    const normalColours = ["#181122", "#0e4429", "#006d32", "#26a641", "#39d353", ]
+    const halloweenColours = ["#181122", "#631c03", "#bd561d", "#fa7a18", "#fddf68", ]
+    let colours = normalColours
+
+    const today = new Date();
+    if(today.getDate() == 31 && today.getMonth() == 9) {
+      colours = halloweenColours
+    } 
+
     context.clearRect(0, 0, cw, ch);
     for (let y = 0; y < ch; y++) {
       for (let x = 0; x < cw; x++) {
-        switch (buffer.state[y][x]) {
-          case 1: {
-            context.fillStyle = "#39d353";
-            break;
-          }
-          case 0: {
-            context.fillStyle = "#26a641";
-            break;
-          }
-          case -1: {
-            context.fillStyle = "#006d32";
-            break;
-          }
-          case -2: {
-            context.fillStyle = "#0e4429";
-            break;
-          }
-          default: {
-            context.fillStyle = "#181122";
-            break;
-          }
+        // offset the array 
+        let colourIndex = buffer.state[y][x] + 3
+        if (colourIndex <= 0) {
+          colourIndex = 0
         }
-
+        context.fillStyle = colours[colourIndex]
         context.fillRect(x * tile_width, y * tile_height, 17, 17);
       }
     }
