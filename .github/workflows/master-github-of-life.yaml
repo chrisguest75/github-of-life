@@ -3,17 +3,10 @@ name: Github of Life CI
 on:
   push:
     branches: 
-      - '!master'   # excludes master
+      - 'master'
     paths:
       - '**'
-      - '.github/workflows/ci-github-of-life.yaml'
-
-  pull_request:
-    branches:  
-      - '!master'   # excludes master
-    paths:
-      - '**'
-      - '.github/workflows/ci-github-of-life.yaml'
+      - '.github/workflows/master-github-of-life.yaml'
 
 jobs:
   build-test:
@@ -99,6 +92,15 @@ jobs:
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: ${{ steps.scan.outputs.sarif }}
+
+    - name: Push to Heroku and release
+      env: 
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: | 
+        heroku container:login 
+        docker tag docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }} registry.heroku.com/github-of-life/web
+        docker push registry.heroku.com/github-of-life/web
+        heroku container:release web -a github-of-life
         
   publish-test-results:
     name: "Publish test results"
