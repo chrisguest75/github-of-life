@@ -167,8 +167,8 @@ open https://github-of-life.herokuapp.com/
 * Heroku CLI [here](https://devcenter.heroku.com/articles/heroku-cli)
 * Deploy Heroku [here](https://dashboard.heroku.com/apps/leaving-conde/deploy/heroku-container)
 * Heroku container-registry-and-runtime [here](https://devcenter.heroku.com/articles/container-registry-and-runtime)
-* https://stackoverflow.com/questions/63102658/how-to-serve-a-json-file-with-parcel-without-bundling-it
-* https://github.com/elwin013/parcel-reporter-static-files-copy
+* parcel-plugin-static-files-copy [here](https://github.com/elwin013/parcel-reporter-static-files-copy)
+* How to copy static files [here](https://stackoverflow.com/questions/63102658/how-to-serve-a-json-file-with-parcel-without-bundling-it)
 * https://kentcdodds.com/blog/using-fetch-with-type-script
 * https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image
 * https://getbootstrap.com/docs/5.0/getting-started/parcel/
