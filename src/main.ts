@@ -21,17 +21,21 @@ const cellfile = new CellFile();
 
 function goFullScreen(){
   const canvas = document.getElementById("github");
-  if(canvas.requestFullScreen)
-      canvas.requestFullScreen();
-  else if(canvas.webkitRequestFullScreen)
-      canvas.webkitRequestFullScreen();
-  else if(canvas.mozRequestFullScreen)
-      canvas.mozRequestFullScreen();
+  if (canvas != null) {
+    if(canvas.requestFullScreen)
+        canvas.requestFullScreen();
+    else if(canvas.webkitRequestFullScreen)
+        canvas.webkitRequestFullScreen();
+    else if(canvas.mozRequestFullScreen)
+        canvas.mozRequestFullScreen();
+  }
 }
 
 async function create() {
   const buildnumber = document.getElementById("buildnumber");
-  buildnumber.innerHTML = "commitid:" + build.build
+  if (buildnumber != null) {
+    buildnumber.innerHTML = "commitid:" + build.build
+  }
 
   const select = document.getElementById("settings_select");
   for (let i = 0; i < data.files.length; i++) {
