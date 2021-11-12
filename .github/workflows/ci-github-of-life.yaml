@@ -27,8 +27,7 @@ jobs:
 
     - name: semgrep-action
     - uses: returntocorp/semgrep-action@v1
-    - run: 
-      - with:
+      with:
         config: >- # more at semgrep.dev/explore
           r/generic.dockerfile
           r/bash
