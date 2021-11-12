@@ -25,6 +25,27 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: semgrep-action
+    - uses: returntocorp/semgrep-action@v1
+    - run: 
+      - with:
+        config: >- # more at semgrep.dev/explore
+          r/generic.dockerfile
+          r/bash
+          r/html
+          p/github-actions
+          r/javascript
+          p/typescript
+
+        # - rules:
+        # - id: print
+        # - languages: 
+        #   - python
+        # - message: Found Print Statement
+        # - pattern: print(...
+        # - severity: ERROR
+
+
     - name: Create build.json
       run: | 
         export COMMITID="${{ github.sha }}"

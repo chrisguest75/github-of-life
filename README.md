@@ -4,11 +4,14 @@ Demonstrate a full screen game of life using github like tiles.
 NOTE: This was based on a folder from this repo https://github.com/chrisguest75/bootstrap
 
 TODO:
+* markdownlint
+* danger.js
+* semgrep
+* dockerslim
 * Overlay navigation for initial conditions
 * Turn on and off fade effect
 * Upload as a lamda (cdk??)
 * Sounds? 
-
 
 Conways game of life [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)  
 
@@ -82,6 +85,7 @@ Install prettier & eslint
 code --install-extension esbenp.prettier-vscode
 npm install --save-dev prettier 
 npm install --save-dev eslint 
+npm install eslint-plugin-security@latest --save-dev
 ```
 
 Static files handling
@@ -111,6 +115,9 @@ heroku authorizations:create
 ## Using npm scripts
 
 ```sh
+# lint the code
+npm run lint 
+
 # build the container includes tests, audit, etc
 npm run docker:build
 npm run docker:rebuild
@@ -130,6 +137,15 @@ npm run deploy
 npm run browse:live
 ```
 
+## Scanning Prereqs
+```sh
+brew install container-structure-test
+brew install semgrep
+brew install dive hadolint dockle
+
+
+
+```
 
 ## Manual commands for local troubleshooting
 ```sh
@@ -184,3 +200,6 @@ open https://github-of-life.herokuapp.com/
 * Heroku github actions https://dev.to/heroku/deploying-to-heroku-from-github-actions-29ej
 
 * https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md
+
+* Semgrep rules repository [here](https://github.com/returntocorp/semgrep-rules)
+* https://semgrep.dev/docs/semgrep-ci/sample-ci-configs/#github-actions
