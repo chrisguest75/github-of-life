@@ -26,7 +26,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: semgrep-action
-    - uses: returntocorp/semgrep-action@v1
+      uses: returntocorp/semgrep-action@v1
       with:
         config: >- # more at semgrep.dev/explore
           r/generic.dockerfile
