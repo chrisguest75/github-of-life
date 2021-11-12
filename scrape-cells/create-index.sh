@@ -21,7 +21,7 @@ do
     echo "File ${_filename} exists as ${_no_extension}"
 
     jq --arg filename "${_no_extension}" '.files += [$filename]' "${INDEX_PATH}" > $TEMPFILE
-    cp "$TEMPFILE" ${INDEX_PATH}
+    cp "$TEMPFILE" "${INDEX_PATH}"
 done < <(ls ${OUTPUT_PATH})
 
 rm "$TEMPFILE"
