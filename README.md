@@ -206,3 +206,8 @@ open https://github-of-life.herokuapp.com/
 * https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md
 * Semgrep rules repository [here](https://github.com/returntocorp/semgrep-rules)
 * https://semgrep.dev/docs/semgrep-ci/sample-ci-configs/#github-actions
+https://github.com/marketplace/actions/semgrep-action
+
+* Filtering rules is not supported
+https://github.com/returntocorp/semgrep/issues/2530
+https://github.com/returntocorp/semgrep-action/pull/319
