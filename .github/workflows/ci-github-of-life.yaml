@@ -31,10 +31,11 @@ jobs:
         config: >- # more at semgrep.dev/explore
           r/generic.dockerfile
           r/bash
-          r/html
           p/github-actions
-          r/javascript
           p/typescript
+
+        # r/javascript
+        # r/html
 
         # - rules:
         # - id: print
@@ -72,6 +73,8 @@ jobs:
     - name: Build production image
       run: |
         docker build --target PRODUCTION --label "org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')" --label "org.opencontainers.image.version=${{ github.sha }}" --label "org.opencontainers.image.url=$(git remote get-url origin)" --no-cache -t docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }} -f Dockerfile .
+        brew install docker-slim 
+        docker-slim build docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
 
     - name: Linting hadolint, dockle and dive
       run: |
