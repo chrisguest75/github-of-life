@@ -16,6 +16,20 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: semgrep-action
+      uses: returntocorp/semgrep-action@v1
+      with:
+        config: >- # more at semgrep.dev/explore
+          r/generic.dockerfile
+          r/bash
+          p/github-actions
+          p/typescript
+          r/html.best-practice.robots-denied.robots-denied
+          r/html.security.missing-noopener.missing-noopener
+          r/html.security.missing-noreferrer.missing-noreferrer
+
+        # r/html
+
     - name: Create build.json
       run: | 
         export COMMITID="${{ github.sha }}"
@@ -43,6 +57,9 @@ jobs:
     - name: Build production image
       run: |
         docker build --target PRODUCTION --label "org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')" --label "org.opencontainers.image.version=${{ github.sha }}" --label "org.opencontainers.image.url=$(git remote get-url origin)" --no-cache -t docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }} -f Dockerfile .
+        #brew install docker-slim 
+        #docker-slim build docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
+        #docker images
 
     - name: Linting hadolint, dockle and dive
       run: |
