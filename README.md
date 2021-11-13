@@ -1,18 +1,24 @@
 # README
-Demonstrate a full screen game of life using github like tiles. 
 
-NOTE: This was based on a folder from this repo https://github.com/chrisguest75/bootstrap
+Demonstrate a full screen game of life using github like tiles.  
+
+NOTE: This was based on a folder from this repo [https://github.com/chrisguest75/bootstrap](https://github.com/chrisguest75/bootstrap)
 
 TODO:
+
+* markdownlint
+* danger.js
+* semgrep
+* dockerslim
 * Overlay navigation for initial conditions
 * Turn on and off fade effect
 * Upload as a lamda (cdk??)
-* Sounds? 
-
+* Sounds?
 
 Conways game of life [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)  
 
 ## Grab cells files
+
 We use the public pattern repository.  
 
 ```sh
@@ -24,6 +30,7 @@ curl -o ./cells/f117.cells https://www.conwaylife.com/patterns/f117.cells
 ```
 
 Update and rebuild the index  
+
 ```sh
 cd ./scrape-cells
 
@@ -35,6 +42,7 @@ cd ./scrape-cells
 ```
 
 ## Run it
+
 ```sh
 npm install
 
@@ -66,6 +74,7 @@ npx tsc --init --rootDir src --outDir build \
 ```
 
 Update the package.json
+
 ```json
     "start": "run-p -l type-check:watch start:dev",
     "type-check": "tsc --noEmit",
@@ -78,18 +87,22 @@ Use the "start" target in the npm script in vscode
 Also use the live server update
 
 Install prettier & eslint
+
 ```sh
 code --install-extension esbenp.prettier-vscode
 npm install --save-dev prettier 
 npm install --save-dev eslint 
+npm install eslint-plugin-security@latest --save-dev
 ```
 
 Static files handling
+
 ```sh
 npm install -D parcel-reporter-static-files-copy
 ```
 
 Add testing
+
 ```sh
 npm install jest @types/jest jest-junit ts-jest --save-dev  
 ```
@@ -98,7 +111,9 @@ npm install jest @types/jest jest-junit ts-jest --save-dev
 # create ico file
 magick -density 128x128 -background none ./static/favicon.png -resize 128x128 ./static/favicon.ico
 ```
+
 ## Configure Deploy to heroku
+
 ```sh
 # open heroku dashboard and create a github-of-life app.
 open https://dashboard.heroku.com/
@@ -111,6 +126,9 @@ heroku authorizations:create
 ## Using npm scripts
 
 ```sh
+# lint the code
+npm run lint 
+
 # build the container includes tests, audit, etc
 npm run docker:build
 npm run docker:rebuild
@@ -130,8 +148,19 @@ npm run deploy
 npm run browse:live
 ```
 
+## Scanning Prereqs
+
+```sh
+brew install container-structure-test
+brew install semgrep
+brew install dive hadolint dockle
+
+
+
+```
 
 ## Manual commands for local troubleshooting
+
 ```sh
 # test locally
 docker build -f Dockerfile --target builder -t github-of-life-builder .
@@ -159,11 +188,8 @@ heroku container:release web -a github-of-life
 open https://github-of-life.herokuapp.com/
 ```
 
+## Resources
 
-
-
-
-# Resources 
 * Heroku CLI [here](https://devcenter.heroku.com/articles/heroku-cli)
 * Deploy Heroku [here](https://dashboard.heroku.com/apps/leaving-conde/deploy/heroku-container)
 * Heroku container-registry-and-runtime [here](https://devcenter.heroku.com/articles/container-registry-and-runtime)
@@ -172,15 +198,16 @@ open https://github-of-life.herokuapp.com/
 * https://kentcdodds.com/blog/using-fetch-with-type-script
 * https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image
 * https://getbootstrap.com/docs/5.0/getting-started/parcel/
-
-
 * https://github.com/GoogleContainerTools/container-structure-test
 * https://github.com/chrisguest75/docker_build_examples/tree/master/33_label_metadata
-
 * https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#onpushpull_requestpaths
-
 * https://www.npmjs.com/package/jest-junit
-
 * Heroku github actions https://dev.to/heroku/deploying-to-heroku-from-github-actions-29ej
-
 * https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md
+* Semgrep rules repository [here](https://github.com/returntocorp/semgrep-rules)
+* https://semgrep.dev/docs/semgrep-ci/sample-ci-configs/#github-actions
+https://github.com/marketplace/actions/semgrep-action
+
+* Filtering rules is not supported
+https://github.com/returntocorp/semgrep/issues/2530
+https://github.com/returntocorp/semgrep-action/pull/319

@@ -4,3 +4,4 @@ junit.xml
 node_modules
 dist
 .parcel-cache
+slim.report.json

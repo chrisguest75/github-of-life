@@ -3,7 +3,7 @@
 #TEMPFILE=$(mktemp)
 OUTPUT_PATH="../static/cells"
 
-mkdir -p ${OUTPUT_PATH}
+mkdir -p "${OUTPUT_PATH}"
 curl -o ./patterns.html https://www.conwaylife.com/patterns/  
 
 # extract the cell file paths.

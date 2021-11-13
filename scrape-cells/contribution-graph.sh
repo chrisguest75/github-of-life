@@ -3,7 +3,7 @@
 #TEMPFILE=$(mktemp)
 OUTPUT_PATH="../static/cells"
 
-mkdir -p ${OUTPUT_PATH}
+mkdir -p "${OUTPUT_PATH}"
 
 USERNAME=chrisguest75
 echo "!Name: contribution graph" > "${OUTPUT_PATH}/!${USERNAME}_contributions.cells"
@@ -21,7 +21,7 @@ do
             outline="${outline}O"
         fi
     done
-    echo ${outline} >> "${OUTPUT_PATH}/!${USERNAME}_contributions.cells"
+    echo "${outline}" >> "${OUTPUT_PATH}/!${USERNAME}_contributions.cells"
 
 
 done < <(curl "https://github-contributions-api.deno.dev/${USERNAME}.text?no-legend=true&no-total=true")

@@ -34,26 +34,31 @@ function goFullScreen(){
 async function create() {
   const buildnumber = document.getElementById("buildnumber");
   if (buildnumber != null) {
-    buildnumber.innerHTML = "commitid:" + build.build
+    buildnumber.textContent = "commitid:" + build.build
   }
 
   const select = document.getElementById("settings_select");
-  for (let i = 0; i < data.files.length; i++) {
-    const opt = document.createElement("option");
-    opt.value = data.files[i];
-    opt.innerHTML = data.files[i];
-    select.appendChild(opt);
+  if (select != null) {
+    for (let i = 0; i < data.files.length; i++) {
+      const opt = document.createElement("option");
+      opt.value = data.files[i];
+      opt.textContent = data.files[i];
+      select.appendChild(opt);
+    }
+
+    select.onchange = function (e) {
+      if (e.target != null) {
+        file_selected = "./cells/" + e.target.value + ".cells";
+      }
+    };
   }
 
-  select.onchange = function (e) {
-    file_selected = "./cells/" + e.target.value + ".cells";
-  };
-
   const canvas = document.getElementById("github");
-  canvas.addEventListener('click', () => {
-    goFullScreen();
-  })
-
+  if (canvas != null) {
+    canvas.addEventListener('click', () => {
+      goFullScreen();
+    })
+  }
   setInterval(update, 60);
 }
 

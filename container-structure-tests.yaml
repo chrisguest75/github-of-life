@@ -24,6 +24,25 @@ fileExistenceTests:
   shouldExist: true
   isExecutableBy: 'owner'
 
+- name: 'index.html'
+  path: '/usr/share/nginx/html/index.html'
+  shouldExist: true
+
+- name: 'favicon.ico'
+  path: '/usr/share/nginx/html/favicon.ico'
+  shouldExist: true
+
+- name: 'og.jpg'
+  path: '/usr/share/nginx/html/og/og.jpg'
+  shouldExist: true
+
+  #*************************************
+  # Required folders
+  #*************************************
+
+- name: 'cells'
+  path: '/usr/share/nginx/html/cells'
+  shouldExist: true
 
 metadataTest:
   entrypoint: ["/docker-entrypoint.sh"]
