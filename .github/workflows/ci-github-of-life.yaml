@@ -33,18 +33,11 @@ jobs:
           r/bash
           p/github-actions
           p/typescript
+          r/html.best-practice.robots-denied.robots-denied
+          r/html.security.missing-noopener.missing-noopener
+          r/html.security.missing-noreferrer.missing-noreferrer
 
-        # r/javascript
         # r/html
-
-        # - rules:
-        # - id: print
-        # - languages: 
-        #   - python
-        # - message: Found Print Statement
-        # - pattern: print(...
-        # - severity: ERROR
-
 
     - name: Create build.json
       run: | 
