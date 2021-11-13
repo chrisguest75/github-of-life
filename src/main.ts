@@ -3,6 +3,7 @@ import { Grid } from "./grid";
 import { Game } from "./game";
 import data from "./index.json";
 import build from "./build.json";
+import * as Cookies from "js-cookie";
 
 const tile_width = 20;
 const tile_height = 20;
@@ -16,6 +17,7 @@ const game = new Game();
 let current = 0;
 let file_loaded = "";
 let file_selected = "./cells/gosperglidergun.cells";
+
 let initial_cells: Array<Array<number>> = [];
 const cellfile = new CellFile();
 
@@ -32,23 +34,37 @@ function goFullScreen(){
 }
 
 async function create() {
+  const defaultselected = Cookies.get('selected')
+  if (defaultselected == undefined) {
+    file_selected = "./cells/gosperglidergun.cells";
+  } else {
+    file_selected = defaultselected
+  }
+
+
   const buildnumber = document.getElementById("buildnumber");
   if (buildnumber != null) {
     buildnumber.textContent = "commitid:" + build.build
   }
 
-  const select = document.getElementById("settings_select");
+  const select = <HTMLSelectElement>document.getElementById("settings_select");
   if (select != null) {
+    let selectindex = 0
     for (let i = 0; i < data.files.length; i++) {
       const opt = document.createElement("option");
-      opt.value = data.files[i];
+      opt.value = "./cells/" + data.files[i] + ".cells";
       opt.textContent = data.files[i];
+      if (file_selected == opt.value) {
+        selectindex = i
+      }
       select.appendChild(opt);
     }
+    select.selectedIndex = selectindex;
 
     select.onchange = function (e) {
       if (e.target != null) {
-        file_selected = "./cells/" + e.target.value + ".cells";
+        file_selected = e.target.value;
+        Cookies.set('selected', file_selected)
       }
     };
   }
@@ -105,12 +121,12 @@ async function update() {
   } else {
     resize(vw, vh);
 
-    const canvas = document.getElementById("github");
     const grid = grids[current];
     current = (current + 1) % 2;
     const buffer = grids[current];
     game.process(grid.state, buffer.state);
 
+    const canvas = document.getElementById("github");
     canvas.width = vw;
     canvas.height = vh;
     const context = canvas.getContext("2d");
