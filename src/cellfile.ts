@@ -1,8 +1,15 @@
+/**
+ * Handle loading in cell file format and converting them to arrays
+ */
 class CellFile {
   constructor() {
     // do nothing.
   }
 
+  /**
+   * @param string A standard celltext file format.
+   * @returns number[][] The loaded initial conditions as a 2d array
+   */
   public parse(celltext: string): number[][] {
     const cells = [];
     const lines: string[] = celltext.split('\n');
