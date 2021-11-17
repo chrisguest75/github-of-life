@@ -1,9 +1,9 @@
-import { CellFile } from "./cellfile";
-import { Grid } from "./grid";
-import { Game } from "./game";
-import data from "./index.json";
-import build from "./build.json";
-import * as Cookies from "js-cookie";
+import { CellFile } from './cellfile';
+import { Grid } from './grid';
+import { Game } from './game';
+import data from './index.json';
+import build from './build.json';
+import * as Cookies from 'js-cookie';
 
 const tile_width = 20;
 const tile_height = 20;
@@ -15,47 +15,43 @@ let grid_2 = new Grid(columns, rows);
 let grids: [Grid, Grid] = [grid_1, grid_2];
 const game = new Game();
 let current = 0;
-let file_loaded = "";
-let file_selected = "./cells/gosperglidergun.cells";
+let file_loaded = '';
+let file_selected = './cells/gosperglidergun.cells';
 
 let initial_cells: Array<Array<number>> = [];
 const cellfile = new CellFile();
 
-function goFullScreen(){
-  const canvas = document.getElementById("github");
+function goFullScreen() {
+  const canvas = document.getElementById('github');
   if (canvas != null) {
-    if(canvas.requestFullScreen)
-        canvas.requestFullScreen();
-    else if(canvas.webkitRequestFullScreen)
-        canvas.webkitRequestFullScreen();
-    else if(canvas.mozRequestFullScreen)
-        canvas.mozRequestFullScreen();
+    if (canvas.requestFullScreen) canvas.requestFullScreen();
+    else if (canvas.webkitRequestFullScreen) canvas.webkitRequestFullScreen();
+    else if (canvas.mozRequestFullScreen) canvas.mozRequestFullScreen();
   }
 }
 
 async function create() {
-  const defaultselected = Cookies.get('selected')
+  const defaultselected = Cookies.get('selected');
   if (defaultselected == undefined) {
-    file_selected = "./cells/gosperglidergun.cells";
+    file_selected = './cells/gosperglidergun.cells';
   } else {
-    file_selected = defaultselected
+    file_selected = defaultselected;
   }
 
-
-  const buildnumber = document.getElementById("buildnumber");
+  const buildnumber = document.getElementById('buildnumber');
   if (buildnumber != null) {
-    buildnumber.textContent = "commitid:" + build.build
+    buildnumber.textContent = 'commitid:' + build.build;
   }
 
-  const select = <HTMLSelectElement>document.getElementById("settings_select");
+  const select = <HTMLSelectElement>document.getElementById('settings_select');
   if (select != null) {
-    let selectindex = 0
+    let selectindex = 0;
     for (let i = 0; i < data.files.length; i++) {
-      const opt = document.createElement("option");
-      opt.value = "./cells/" + data.files[i] + ".cells";
+      const opt = document.createElement('option');
+      opt.value = './cells/' + data.files[i] + '.cells';
       opt.textContent = data.files[i];
       if (file_selected == opt.value) {
-        selectindex = i
+        selectindex = i;
       }
       select.appendChild(opt);
     }
@@ -64,16 +60,16 @@ async function create() {
     select.onchange = function (e) {
       if (e.target != null) {
         file_selected = e.target.value;
-        Cookies.set('selected', file_selected)
+        Cookies.set('selected', file_selected);
       }
     };
   }
 
-  const canvas = document.getElementById("github");
+  const canvas = document.getElementById('github');
   if (canvas != null) {
     canvas.addEventListener('click', () => {
       goFullScreen();
-    })
+    });
   }
   setInterval(update, 60);
 }
@@ -83,11 +79,7 @@ function loadnew(columns: number, rows: number) {
   grid_2 = new Grid(columns, rows);
   current = 0;
   grids = [grid_1, grid_2];
-  grids[0].draw_sprite(
-    initial_cells,
-    Math.floor(columns / 2),
-    Math.floor(rows / 2)
-  );
+  grids[0].draw_sprite(initial_cells, Math.floor(columns / 2), Math.floor(rows / 2));
 }
 
 function resize(vw: number, vh: number) {
@@ -101,14 +93,8 @@ function resize(vw: number, vh: number) {
 }
 
 async function update() {
-  const vw = Math.max(
-    document.documentElement.clientWidth || 0,
-    window.innerWidth || 0
-  );
-  const vh = Math.max(
-    document.documentElement.clientHeight || 0,
-    window.innerHeight || 0
-  );
+  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
 
   if (file_loaded != file_selected) {
     file_loaded = file_selected;
@@ -126,31 +112,31 @@ async function update() {
     const buffer = grids[current];
     game.process(grid.state, buffer.state);
 
-    const canvas = document.getElementById("github");
+    const canvas = document.getElementById('github');
     canvas.width = vw;
     canvas.height = vh;
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext('2d');
     const cw = columns;
     const ch = rows;
 
-    const normalColours = ["#181122", "#0e4429", "#006d32", "#26a641", "#39d353", ]
-    const halloweenColours = ["#181122", "#631c03", "#bd561d", "#fa7a18", "#fddf68", ]
-    let colours = normalColours
+    const normalColours = ['#181122', '#0e4429', '#006d32', '#26a641', '#39d353'];
+    const halloweenColours = ['#181122', '#631c03', '#bd561d', '#fa7a18', '#fddf68'];
+    let colours = normalColours;
 
     const today = new Date();
-    if(today.getDate() == 31 && today.getMonth() == 9) {
-      colours = halloweenColours
-    } 
+    if (today.getDate() == 31 && today.getMonth() == 9) {
+      colours = halloweenColours;
+    }
 
     context.clearRect(0, 0, cw, ch);
     for (let y = 0; y < ch; y++) {
       for (let x = 0; x < cw; x++) {
-        // offset the array 
-        let colourIndex = buffer.state[y][x] + 3
+        // offset the array
+        let colourIndex = buffer.state[y][x] + 3;
         if (colourIndex <= 0) {
-          colourIndex = 0
+          colourIndex = 0;
         }
-        context.fillStyle = colours[colourIndex]
+        context.fillStyle = colours[colourIndex];
         context.fillRect(x * tile_width, y * tile_height, 17, 17);
       }
     }

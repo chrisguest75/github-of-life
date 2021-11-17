@@ -27,12 +27,7 @@ class Grid {
     x -= Math.floor(width / 2);
     for (let k = 0; k < height; k++) {
       for (let j = 0; j < width; j++) {
-        if (
-          y + k > 0 &&
-          y + k < this._height &&
-          x + j > 0 &&
-          x + j < this._width
-        ) {
+        if (y + k > 0 && y + k < this._height && x + j > 0 && x + j < this._width) {
           this._grid[y + k][x + j] = sprite[k][j];
         }
       }

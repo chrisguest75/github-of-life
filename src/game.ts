@@ -5,13 +5,13 @@ class Game {
     const columns = grid[0].length;
 
     for (let y = 0; y < rows; y++) {
-      let line = "";
+      let line = '';
       for (let x = 0; x < columns; x++) {
         if (grid[y][x] == 1) {
-          line += "⚪";
+          line += '⚪';
           buffer[y][x] = 1;
         } else {
-          line += "⚫";
+          line += '⚫';
           buffer[y][x] = 0;
         }
       }

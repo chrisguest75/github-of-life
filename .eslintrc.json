@@ -6,15 +6,27 @@
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended",
         "plugin:security/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaVersion": 13
+        "ecmaVersion": 2019,
+        "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint", 
+        "prettier"
     ],
     "rules": {
+        "prettier/prettier": [
+            "error",
+            {
+                "semi": true,
+                "trailingComma": "all",
+                "singleQuote": true,
+                "printWidth": 120,
+                "tabWidth": 2
+            }]
     }
 }
