@@ -5,7 +5,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "NODE_ENV=development parcel build ./src/index.html --no-optimize --public-url ./",
-    "clean:build": "npm run clean;npm run build",
+    "rebuild": "npm run clean;npm run build",
+    "clean:build": "npm run rebuild",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "start": "run-p -l type-check:watch start:dev",

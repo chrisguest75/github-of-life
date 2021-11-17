@@ -92,7 +92,7 @@ Install prettier & eslint
 code --install-extension esbenp.prettier-vscode
 npm install --save-dev prettier 
 npm install --save-dev eslint 
-npm install eslint-plugin-security@latest --save-dev
+npm install --save-dev eslint-plugin-security@latest 
 ```
 
 Static files handling
