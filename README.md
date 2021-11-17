@@ -93,6 +93,8 @@ code --install-extension esbenp.prettier-vscode
 npm install --save-dev prettier 
 npm install --save-dev eslint 
 npm install --save-dev eslint-plugin-security@latest 
+npm install eslint-plugin-prettier@latest --save-dev 
+npm install --save-dev eslint-config-prettier
 ```
 
 Static files handling
@@ -106,6 +108,13 @@ Add testing
 ```sh
 npm install jest @types/jest jest-junit ts-jest --save-dev  
 ```
+
+Add typedoc
+
+```sh
+npm install --savedev typedoc           
+```
+
 
 ```sh
 # create ico file
