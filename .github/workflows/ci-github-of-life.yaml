@@ -21,7 +21,22 @@ jobs:
   build-test:
     name: "Build, test, deploy github_of_life"  
     runs-on: ubuntu-latest
+    env:
+      BUILDEVENT_APIKEY: ${{ secrets.BUILDEVENT_APIKEY }}
+      BUILDEVENT_DATASET: 'buildevents'
+      BUILDEVENT_CIPROVIDER: 'github-actions'
+
     steps:
+    - name: Save starttime
+      run: | 
+        echo $(date +%s) > ../build-start
+        echo "${{ github.sha }}-$GITHUB_RUN_ID" > ../build-tag
+        echo "${{ github.event.head_commit.message }}"
+
+    - name: Install honeycomb buildevents tool
+      run: |
+        curl -L -o /usr/local/bin/buildevents https://github.com/honeycombio/buildevents/releases/latest/download/buildevents-linux-amd64 && chmod 755 /usr/local/bin/buildevents
+
     - name: Checkout
       uses: actions/checkout@v2
 
