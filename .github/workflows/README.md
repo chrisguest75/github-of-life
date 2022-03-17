@@ -4,7 +4,8 @@ Github actions for the github of life
 
 TODO:
 
-* buildevents
+* Use cache to pass values between steps
+* Reuse parts of build in ci and main.
 * working-directory
 * env 
 on:
