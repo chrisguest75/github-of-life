@@ -161,6 +161,10 @@ jobs:
     #     grype -o json docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
 
     # this can only be enabled in public repo
+    - name: Scan image using grype start
+      run: | 
+        echo $(date +%s) > ../build-start-grype
+
     - name: Scan image using grype
       uses: anchore/scan-action@v3
       id: scan
@@ -170,10 +174,26 @@ jobs:
         severity-cutoff: critical
         fail-build: false
 
+    - name: Scan image using grype end
+      run: | 
+        STEP="Scan image using grype"
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $(cat ../build-start-grype) "$STEP"
+
+    - name: Upload Anchore Grype scan SARIF report start
+      run: | 
+        echo $(date +%s) > ../build-start-upload-sarif
+
     - name: Upload Anchore Grype scan SARIF report
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: ${{ steps.scan.outputs.sarif }}
+
+    - name: Upload Anchore Grype scan SARIF report end
+      run: | 
+        STEP="Upload Anchore Grype scan SARIF report"
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $(cat ../build-start-upload-sarif) "$STEP"
 
     - name: Build fail
       if: failure()
