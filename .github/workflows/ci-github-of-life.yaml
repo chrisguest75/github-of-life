@@ -28,11 +28,39 @@ jobs:
       GIT_COMMIT_MSG: '${{ github.event.head_commit.message }}'
 
     steps:
+    # - name: Dump GitHub context
+    #   id: github_context_step
+    #   run: echo '${{ toJSON(github) }}'
+    - name: Dump job context
+      run: echo '${{ toJSON(job) }}'
+    - name: Dump steps context
+      run: echo '${{ toJSON(steps) }}'
+    - name: Dump runner context
+      run: echo '${{ toJSON(runner) }}'
+    - name: Dump strategy context
+      run: echo '${{ toJSON(strategy) }}'
+    - name: Dump matrix context
+      run: echo '${{ toJSON(matrix) }}'
+
+    # - name: Cache starttime
+    #   id: Cache starttime
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: build-starttime
+    #     key: ${{ runner.os }}-primes
+
     - name: Save starttime
       run: | 
         echo $(date +%s) > ../build-start
         echo "${{ github.sha }}-$GITHUB_RUN_ID" > ../build-tag
         echo "Commit msg: '$GIT_COMMIT_MSG'"
+
+    # - name: Cache Primes
+    #   id: cache-primes
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: prime-numbers
+    #     key: ${{ runner.os }}-primes
 
     - name: Install honeycomb buildevents tool
       run: |
@@ -214,9 +242,9 @@ jobs:
     if: success() || failure()
 
     steps:
-      - name: "Publish test results start"
-        run: | 
-          echo $(date +%s) > ../build-start-publish
+      # - name: Publish test results start
+      #   run: | 
+      #     echo $(date +%s) > ../build-start-publish
 
       - name: Download results
         uses: actions/download-artifact@v2
@@ -235,8 +263,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: ./test/results/*.xml
 
-      - name: "Publish test results end"
-        run: | 
-          STEP= "Publish test results"
-          STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
-          buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $(cat ../build-start-publish) "$STEP"
+      # - name: Publish test results end
+      #   run: | 
+      #     STEP= "Publish test results"
+      #     STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+      #     buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $(cat ../build-start-publish) "$STEP"

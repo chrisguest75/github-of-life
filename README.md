@@ -1,5 +1,7 @@
 # README
 
+[![Github of Life - CI](https://github.com/chrisguest75/github-of-life/actions/workflows/ci-github-of-life.yaml/badge.svg)](https://github.com/chrisguest75/github-of-life/actions/workflows/ci-github-of-life.yaml)  
+  
 Demonstrate a full screen game of life using github like tiles.  
 
 NOTE: This was based on a folder from this repo [https://github.com/chrisguest75/bootstrap](https://github.com/chrisguest75/bootstrap)
