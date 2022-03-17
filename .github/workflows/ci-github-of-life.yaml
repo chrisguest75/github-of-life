@@ -60,8 +60,10 @@ jobs:
         STEP="Create build.json"
         STEP_START=$(date +%s)
         STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+
         export COMMITID="${{ github.sha }}"
         cat ./src/build.template | envsubst > ./src/build.json          
+
         buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $STEP_START "$STEP"
 
     - name: Build and test the github_of_life Docker image
@@ -69,7 +71,9 @@ jobs:
         STEP="Build and test the github_of_life Docker image"
         STEP_START=$(date +%s)
         STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+
         docker build --target BUILDER --label "org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')" --label "org.opencontainers.image.version=${{ github.sha }}" --label "org.opencontainers.image.url=$(git remote get-url origin)" --no-cache -t docker.pkg.github.com/${{ github.repository }}/github-of-life-build:${{ github.sha }} -f Dockerfile .
+
         buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $STEP_START "$STEP"
 
     - name: Get the test results from container
@@ -77,12 +81,14 @@ jobs:
         STEP="Get the test results from container"
         STEP_START=$(date +%s)
         STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+
         docker create --name test_githuboflife docker.pkg.github.com/${{ github.repository }}/github-of-life-build:${{ github.sha }}
         mkdir -p ./test/results
         ls -aR ./test/results
         docker cp test_githuboflife:/scratch/junit.xml ./test/results
         docker rm test_githuboflife
         ls -aR ./test/results
+        
         buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $STEP_START "$STEP"
 
     - name: Copy results to artifacts
@@ -93,13 +99,23 @@ jobs:
 
     - name: Build production image
       run: |
+        STEP="Build production image"
+        STEP_START=$(date +%s)
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+
         docker build --target PRODUCTION --label "org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')" --label "org.opencontainers.image.version=${{ github.sha }}" --label "org.opencontainers.image.url=$(git remote get-url origin)" --no-cache -t docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }} -f Dockerfile .
         #brew install docker-slim 
         #docker-slim build docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
         #docker images
 
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $STEP_START "$STEP"
+
     - name: Linting hadolint, dockle and dive
       run: |
+        STEP=" Linting hadolint, dockle and dive"
+        STEP_START=$(date +%s)
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+
         echo "Installing HADOLINT"
         brew install hadolint        
         echo "Running HADOLINT"
@@ -115,6 +131,8 @@ jobs:
         echo "Running DIVE"
         dive docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }} --ci
         echo "COMPLETE exitcode:$?"
+
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $STEP_START "$STEP"
 
     - name: Run container-structure-tests
       uses: plexsystems/container-structure-test-action@v0.1.0
