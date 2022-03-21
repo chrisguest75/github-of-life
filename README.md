@@ -1,19 +1,20 @@
 # README
 
+[![Github of Life - CI](https://github.com/chrisguest75/github-of-life/actions/workflows/ci-github-of-life.yaml/badge.svg)](https://github.com/chrisguest75/github-of-life/actions/workflows/ci-github-of-life.yaml)  
+  
 Demonstrate a full screen game of life using github like tiles.  
 
 NOTE: This was based on a folder from this repo [https://github.com/chrisguest75/bootstrap](https://github.com/chrisguest75/bootstrap)
 
 TODO:
 
-* markdownlint
 * danger.js
-* semgrep
 * dockerslim
 * Overlay navigation for initial conditions
 * Turn on and off fade effect
 * Upload as a lamda (cdk??)
 * Sounds?
+* jest tests using honeycomb
 
 Conways game of life [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)  
 
@@ -220,3 +221,4 @@ https://github.com/marketplace/actions/semgrep-action
 * Filtering rules is not supported
 https://github.com/returntocorp/semgrep/issues/2530
 https://github.com/returntocorp/semgrep-action/pull/319
+https://www.npmjs.com/package/better-npm-audit

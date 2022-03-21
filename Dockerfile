@@ -7,13 +7,14 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY static ./static
-COPY tsconfig.json .prettierrc jest.config.js .parcelrc .eslintrc.json ./
+COPY tsconfig.json .nsprc .prettierrc jest.config.js .parcelrc .eslintrc.json ./
 COPY src ./src
 COPY tests ./tests
 RUN npm run lint
 RUN npm run test:coverage
 RUN npm run build
-RUN npm audit
+# use better-npm-audit
+RUN npm run audit
 
 FROM nginx:1.21.3 AS PRODUCTION
 LABEL dockerfile.baseimage="nginx:1.21.3" dockerfile.description="github-of-life" dockerfile.stage="PRODUCTION"

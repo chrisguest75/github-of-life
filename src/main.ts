@@ -24,9 +24,9 @@ const cellfile = new CellFile();
 function goFullScreen() {
   const canvas = document.getElementById('github');
   if (canvas != null) {
-    if (canvas.requestFullScreen) canvas.requestFullScreen();
-    else if (canvas.webkitRequestFullScreen) canvas.webkitRequestFullScreen();
-    else if (canvas.mozRequestFullScreen) canvas.mozRequestFullScreen();
+    if (canvas.requestFullscreen) canvas.requestFullscreen();
+    else if (canvas.webkitRequestFullscreen) canvas.webkitRequestFullscreen();
+    else if (canvas.mozRequestFullscreen) canvas.mozRequestFullscreen();
   }
 }
 

@@ -21,7 +21,51 @@ jobs:
   build-test:
     name: "Build, test, deploy github_of_life"  
     runs-on: ubuntu-latest
+    env:
+      BUILDEVENT_APIKEY: '${{ secrets.BUILDEVENT_APIKEY }}'
+      BUILDEVENT_DATASET: 'buildevents'
+      BUILDEVENT_CIPROVIDER: 'github-actions'
+      GIT_COMMIT_MSG: '${{ github.event.head_commit.message }}'
+
     steps:
+    # - name: Dump GitHub context
+    #   id: github_context_step
+    #   run: echo '${{ toJSON(github) }}'
+    - name: Dump job context
+      run: echo '${{ toJSON(job) }}'
+    - name: Dump steps context
+      run: echo '${{ toJSON(steps) }}'
+    - name: Dump runner context
+      run: echo '${{ toJSON(runner) }}'
+    - name: Dump strategy context
+      run: echo '${{ toJSON(strategy) }}'
+    - name: Dump matrix context
+      run: echo '${{ toJSON(matrix) }}'
+
+    # - name: Cache starttime
+    #   id: Cache starttime
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: build-starttime
+    #     key: ${{ runner.os }}-primes
+
+    - name: Save starttime
+      run: | 
+        echo $(date +%s) > ../build-start
+        echo "${{ github.sha }}-$GITHUB_RUN_ID" > ../build-tag
+        echo "Commit msg: '$GIT_COMMIT_MSG'"
+
+    # - name: Cache Primes
+    #   id: cache-primes
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: prime-numbers
+    #     key: ${{ runner.os }}-primes
+
+    - name: Install honeycomb buildevents tool
+      run: |
+        curl -s -L -o /usr/local/bin/buildevents https://github.com/honeycombio/buildevents/releases/latest/download/buildevents-linux-amd64 && chmod 755 /usr/local/bin/buildevents
+
     - name: Checkout
       uses: actions/checkout@v2
 
@@ -31,8 +75,8 @@ jobs:
         config: >- # more at semgrep.dev/explore
           r/generic.dockerfile
           r/bash
-          p/github-actions
           p/typescript
+          p/github-actions
           r/html.best-practice.robots-denied.robots-denied
           r/html.security.missing-noopener.missing-noopener
           r/html.security.missing-noreferrer.missing-noreferrer
@@ -41,21 +85,39 @@ jobs:
 
     - name: Create build.json
       run: | 
+        STEP="Create build.json"
+        STEP_START=$(date +%s)
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+
         export COMMITID="${{ github.sha }}"
         cat ./src/build.template | envsubst > ./src/build.json          
 
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $STEP_START "$STEP"
+
     - name: Build and test the github_of_life Docker image
       run: |
+        STEP="Build and test the github_of_life Docker image"
+        STEP_START=$(date +%s)
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+
         docker build --target BUILDER --label "org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')" --label "org.opencontainers.image.version=${{ github.sha }}" --label "org.opencontainers.image.url=$(git remote get-url origin)" --no-cache -t docker.pkg.github.com/${{ github.repository }}/github-of-life-build:${{ github.sha }} -f Dockerfile .
+
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $STEP_START "$STEP"
 
     - name: Get the test results from container
       run: | 
+        STEP="Get the test results from container"
+        STEP_START=$(date +%s)
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+
         docker create --name test_githuboflife docker.pkg.github.com/${{ github.repository }}/github-of-life-build:${{ github.sha }}
         mkdir -p ./test/results
         ls -aR ./test/results
         docker cp test_githuboflife:/scratch/junit.xml ./test/results
         docker rm test_githuboflife
         ls -aR ./test/results
+        
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $STEP_START "$STEP"
 
     - name: Copy results to artifacts
       uses: actions/upload-artifact@v2
@@ -65,13 +127,23 @@ jobs:
 
     - name: Build production image
       run: |
+        STEP="Build production image"
+        STEP_START=$(date +%s)
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+
         docker build --target PRODUCTION --label "org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%SZ')" --label "org.opencontainers.image.version=${{ github.sha }}" --label "org.opencontainers.image.url=$(git remote get-url origin)" --no-cache -t docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }} -f Dockerfile .
         #brew install docker-slim 
         #docker-slim build docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
         #docker images
 
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $STEP_START "$STEP"
+
     - name: Linting hadolint, dockle and dive
       run: |
+        STEP=" Linting hadolint, dockle and dive"
+        STEP_START=$(date +%s)
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+
         echo "Installing HADOLINT"
         brew install hadolint        
         echo "Running HADOLINT"
@@ -88,11 +160,23 @@ jobs:
         dive docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }} --ci
         echo "COMPLETE exitcode:$?"
 
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $STEP_START "$STEP"
+
+    - name: Run container-structure-tests start
+      run: | 
+        echo $(date +%s) > ../build-start-container-structure-tests 
+
     - name: Run container-structure-tests
       uses: plexsystems/container-structure-test-action@v0.1.0
       with:
         image: docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
         config: ./container-structure-tests.yaml
+
+    - name: Run container-structure-tests end
+      run: | 
+        STEP="Run container-structure-tests"
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $(cat ../build-start-container-structure-tests) "$STEP"
 
     # - name: Docker scan
     #   run: |
@@ -105,6 +189,10 @@ jobs:
     #     grype -o json docker.pkg.github.com/${{ github.repository }}/github-of-life:${{ github.sha }}
 
     # this can only be enabled in public repo
+    - name: Scan image using grype start
+      run: | 
+        echo $(date +%s) > ../build-start-grype
+
     - name: Scan image using grype
       uses: anchore/scan-action@v3
       id: scan
@@ -114,11 +202,38 @@ jobs:
         severity-cutoff: critical
         fail-build: false
 
+    - name: Scan image using grype end
+      run: | 
+        STEP="Scan image using grype"
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $(cat ../build-start-grype) "$STEP"
+
+    - name: Upload Anchore Grype scan SARIF report start
+      run: | 
+        echo $(date +%s) > ../build-start-upload-sarif
+
     - name: Upload Anchore Grype scan SARIF report
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: ${{ steps.scan.outputs.sarif }}
-        
+
+    - name: Upload Anchore Grype scan SARIF report end
+      run: | 
+        STEP="Upload Anchore Grype scan SARIF report"
+        STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+        buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $(cat ../build-start-upload-sarif) "$STEP"
+
+    - name: Build fail
+      if: failure()
+      run: |
+        buildevents build $GITHUB_RUN_ID $(cat ../build-start) failure
+
+    - name: Build success
+      if: success()
+      run: |
+        buildevents build $GITHUB_RUN_ID $(cat ../build-start) success 
+
+
   publish-test-results:
     name: "Publish test results"
     needs: build-test
@@ -127,6 +242,10 @@ jobs:
     if: success() || failure()
 
     steps:
+      # - name: Publish test results start
+      #   run: | 
+      #     echo $(date +%s) > ../build-start-publish
+
       - name: Download results
         uses: actions/download-artifact@v2
         with:
@@ -143,3 +262,9 @@ jobs:
           check_name: Test results
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: ./test/results/*.xml
+
+      # - name: Publish test results end
+      #   run: | 
+      #     STEP= "Publish test results"
+      #     STEP_SPAN_ID=$(echo "$STEP" | cksum | cut -f 1 -d \ )
+      #     buildevents step $GITHUB_RUN_ID $STEP_SPAN_ID $(cat ../build-start-publish) "$STEP"
