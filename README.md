@@ -8,9 +8,7 @@ NOTE: This was based on a folder from this repo [https://github.com/chrisguest75
 
 TODO:
 
-* markdownlint
 * danger.js
-* semgrep
 * dockerslim
 * Overlay navigation for initial conditions
 * Turn on and off fade effect
