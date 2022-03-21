@@ -12,7 +12,7 @@ jobs:
   build-test:
     name: "Build, test, deploy github_of_life"  
     runs-on: ubuntu-latest
-        env:
+    env:
       BUILDEVENT_APIKEY: '${{ secrets.BUILDEVENT_APIKEY }}'
       BUILDEVENT_DATASET: 'buildevents'
       BUILDEVENT_CIPROVIDER: 'github-actions'
