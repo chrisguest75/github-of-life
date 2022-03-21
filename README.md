@@ -14,6 +14,7 @@ TODO:
 * Turn on and off fade effect
 * Upload as a lamda (cdk??)
 * Sounds?
+* jest tests using honeycomb
 
 Conways game of life [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)  
 
@@ -220,3 +221,4 @@ https://github.com/marketplace/actions/semgrep-action
 * Filtering rules is not supported
 https://github.com/returntocorp/semgrep/issues/2530
 https://github.com/returntocorp/semgrep-action/pull/319
+https://www.npmjs.com/package/better-npm-audit

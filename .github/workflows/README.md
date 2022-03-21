@@ -5,6 +5,7 @@ Github actions for the github of life
 TODO:
 
 * Use cache to pass values between steps
+  * refactor build to make deployment a separate job.
 * Reuse parts of build in ci and main.
 * working-directory
 * env
