@@ -1,5 +1,5 @@
-FROM node:14.18.1-bullseye AS BUILDER
-LABEL dockerfile.baseimage="node:14.18.1-bullseye" dockerfile.description="github-of-life" dockerfile.stage="BUILDER"
+FROM node:14.19.1-bullseye AS BUILDER
+LABEL dockerfile.baseimage="node:14.19.1-bullseye" dockerfile.description="github-of-life" dockerfile.stage="BUILDER"
 
 WORKDIR /scratch
 COPY package.json package-lock.json ./
@@ -16,8 +16,8 @@ RUN npm run build
 # use better-npm-audit
 RUN npm run audit
 
-FROM nginx:1.21.3 AS PRODUCTION
-LABEL dockerfile.baseimage="nginx:1.21.3" dockerfile.description="github-of-life" dockerfile.stage="PRODUCTION"
+FROM nginx:1.21.6 AS PRODUCTION
+LABEL dockerfile.baseimage="nginx:1.21.6" dockerfile.description="github-of-life" dockerfile.stage="PRODUCTION"
 
 ## add permissions for nginx user
 RUN chown -R nginx:nginx /var/cache/nginx && \
