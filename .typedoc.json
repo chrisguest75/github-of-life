@@ -1,4 +1,7 @@
 {
-    "entryPoints": ["./src/main.ts"],
-    "out": "doc"
+    "entryPoints": ["src/main.ts"],
+    "exclude": ["dist"],
+    "excludeExternals": true,
+    "includeVersion": true,
+    "out": "docs"
 }
