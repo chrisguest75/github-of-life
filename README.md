@@ -8,13 +8,18 @@ NOTE: This was based on a folder from this repo [https://github.com/chrisguest75
 
 TODO:
 
+* Split the actions pipeline into tasks rather than steps
 * danger.js
 * dockerslim
-* Overlay navigation for initial conditions
 * Turn on and off fade effect
 * Upload as a lamda (cdk??)
-* Sounds?
 * jest tests using honeycomb
+* Cypress tests and profiling
+* Switch to cloudrun
+* Sounds?
+* Metrics - file loads, fullscreen, etc
+* Overlay navigation for initial conditions
+* Draw on the canvas
 
 Conways game of life [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)  
 
