@@ -1,8 +1,16 @@
+/**
+ * The game board state.
+ */
 class Grid {
   protected _grid: number[][] = [];
   protected _width: number;
   protected _height: number;
 
+  /**
+   * Constructs the game grid
+   * @param columns Number of columns for grid
+   * @param rows Number of rows for grid
+   */
   constructor(columns: number, rows: number) {
     this._width = columns;
     this._height = rows;
@@ -16,10 +24,20 @@ class Grid {
     }
   }
 
+  /**
+   * Retrieves the grid 2d array
+   */
   public get state(): number[][] {
     return this._grid;
   }
 
+  /**
+   * Draw a given 2d sprite onto the game board with clipping. 
+   * Places the sprite from the centre point
+   * @param sprite A 2d array containing the sprite
+   * @param x x-coordinate
+   * @param y y-coordinate
+   */
   public draw_sprite(sprite: number[][], x: number, y: number) {
     const height = sprite.length;
     const width = sprite[0].length;

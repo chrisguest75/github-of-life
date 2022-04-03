@@ -5,6 +5,9 @@ import data from './index.json';
 import build from './build.json';
 import * as Cookies from 'js-cookie';
 
+/**
+ * @interface FullScreennHTMLCanvasElement
+ */
 interface FullScreennHTMLCanvasElement extends HTMLCanvasElement {
   msRequestFullscreen?: () => void;
   mozRequestFullScreen?: () => void;
@@ -27,6 +30,9 @@ let file_selected = './cells/gosperglidergun.cells';
 let initial_cells: Array<Array<number>> = [];
 const cellfile = new CellFile();
 
+/**
+ * goFullScreen 
+ */
 function goFullScreen() {
   const canvas = <FullScreennHTMLCanvasElement>document.getElementById('github');
   if (canvas != null) {
