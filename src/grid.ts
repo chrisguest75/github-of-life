@@ -32,7 +32,7 @@ class Grid {
   }
 
   /**
-   * Draw a given 2d sprite onto the game board with clipping. 
+   * Draw a given 2d sprite onto the game board with clipping.
    * Places the sprite from the centre point
    * @param sprite A 2d array containing the sprite
    * @param x x-coordinate

@@ -31,7 +31,7 @@ let initial_cells: Array<Array<number>> = [];
 const cellfile = new CellFile();
 
 /**
- * goFullScreen 
+ * goFullScreen
  */
 function goFullScreen() {
   const canvas = <FullScreennHTMLCanvasElement>document.getElementById('github');
