@@ -71,14 +71,14 @@ class Game {
           } else {
             // 1. A cell with fewer than two live neighbours dies of under-population
             // 3. A cell with more than 3 live neighbours dies of overcrowding
-            buffer[y][x]--;
+            buffer[y][x] = grid[y][x] - 1;
           }
         } else {
           // 4. An empty cell with exactly 3 live neighbours "comes to life"
           if (count == 3) {
             buffer[y][x] = 1;
           } else {
-            buffer[y][x]--;
+            buffer[y][x] = grid[y][x] - 1;
           }
         }
       }

@@ -23,10 +23,10 @@ test('empty test', () => {
   // ASSERT
   // because of the screen fade
   grid1.forEach((element) => {
-    expect([0, 0, 0, 0, 0]).toStrictEqual(element);
+    expect(element).toStrictEqual([0, 0, 0, 0, 0]);
   });
   outgrid.forEach((element) => {
-    expect([-1, -1, -1, -1, -1]).toStrictEqual(element);
+    expect(element).toStrictEqual([-1, -1, -1, -1, -1]);
   });
 });
 
@@ -51,13 +51,13 @@ test('A cell with fewer than two live neighbours dies of under-population - noth
   game.process(grid1, outgrid);
 
   // ASSERT
-  expect([
+  expect(outgrid).toStrictEqual([
     [-1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1],
+    [-1, -1, 0, -1, -1],
     [-1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1],
-  ]).toStrictEqual(outgrid);
+  ]);
 });
 
 test('A cell with fewer than two live neighbours dies of under-population - one surrounds', () => {
@@ -81,13 +81,13 @@ test('A cell with fewer than two live neighbours dies of under-population - one 
   game.process(grid1, outgrid);
 
   // ASSERT
-  expect([
+  expect(outgrid).toStrictEqual([
+    [-1, -1, -1, -1, -1],
+    [-1, 0, -1, -1, -1],
+    [-1, -1, 0, -1, -1],
     [-1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1],
-  ]).toStrictEqual(outgrid);
+  ]);
 });
 
 test('A cell with 2 or 3 live neighbours lives on to the next generation - ', () => {
@@ -111,13 +111,13 @@ test('A cell with 2 or 3 live neighbours lives on to the next generation - ', ()
   game.process(grid1, outgrid);
 
   // ASSERT
-  expect([
+  expect(outgrid).toStrictEqual([
     [-1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1],
+    [-1, 0, -1, -1, -1],
     [-1, -1, 1, -1, -1],
+    [-1, -1, -1, 0, -1],
     [-1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1],
-  ]).toStrictEqual(outgrid);
+  ]);
 });
 
 test('A cell with 2 or 3 live neighbours lives on to the next generation - ', () => {
@@ -141,13 +141,13 @@ test('A cell with 2 or 3 live neighbours lives on to the next generation - ', ()
   game.process(grid1, outgrid);
 
   // ASSERT
-  expect([
+  expect(outgrid).toStrictEqual([
     [-1, -1, -1, -1, -1],
     [-1, 1, 1, -1, -1],
     [-1, 1, 1, -1, -1],
     [-1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1],
-  ]).toStrictEqual(outgrid);
+  ]);
 });
 
 /*
@@ -174,11 +174,41 @@ test('A cell with more than 3 live neighbours dies of overcrowding', () => {
   game.process(grid1, outgrid);
 
   // ASSERT
-  expect([
+  expect(outgrid).toStrictEqual([
     [-1, -1, 1, -1, -1],
-    [-1, 1, -1, 1, -1],
-    [-1, 1, -1, 1, -1],
+    [-1, 1, 0, 1, -1],
+    [-1, 1, 0, 1, -1],
     [-1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1],
-  ]).toStrictEqual(outgrid);
+  ]);
+});
+
+test('Simple oscillator', () => {
+  // ARRANGE
+  const game = new Game();
+  // ACT
+  const grid1 = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+  ];
+  const outgrid = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+  ];
+  game.process(grid1, outgrid);
+
+  // ASSERT
+  expect(outgrid).toStrictEqual([
+    [-1, -1, -1, -1, -1],
+    [-1, -1, 0, -1, -1],
+    [-1, 1, 1, 1, -1],
+    [-1, -1, 0, -1, -1],
+    [-1, -1, -1, -1, -1],
+  ]);
 });
