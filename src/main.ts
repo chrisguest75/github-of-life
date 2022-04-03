@@ -5,6 +5,15 @@ import data from './index.json';
 import build from './build.json';
 import * as Cookies from 'js-cookie';
 
+/**
+ * @interface FullScreennHTMLCanvasElement
+ */
+interface FullScreennHTMLCanvasElement extends HTMLCanvasElement {
+  msRequestFullscreen?: () => void;
+  mozRequestFullScreen?: () => void;
+  webkitRequestFullscreen?: () => void;
+}
+
 const tile_width = 20;
 const tile_height = 20;
 
@@ -21,12 +30,15 @@ let file_selected = './cells/gosperglidergun.cells';
 let initial_cells: Array<Array<number>> = [];
 const cellfile = new CellFile();
 
+/**
+ * goFullScreen
+ */
 function goFullScreen() {
-  const canvas = document.getElementById('github');
+  const canvas = <FullScreennHTMLCanvasElement>document.getElementById('github');
   if (canvas != null) {
     if (canvas.requestFullscreen) canvas.requestFullscreen();
     else if (canvas.webkitRequestFullscreen) canvas.webkitRequestFullscreen();
-    else if (canvas.mozRequestFullscreen) canvas.mozRequestFullscreen();
+    else if (canvas.mozRequestFullScreen) canvas.mozRequestFullScreen();
   }
 }
 
@@ -59,7 +71,7 @@ async function create() {
 
     select.onchange = function (e) {
       if (e.target != null) {
-        file_selected = e.target.value;
+        file_selected = (e.target as HTMLInputElement).value;
         Cookies.set('selected', file_selected);
       }
     };
@@ -112,10 +124,14 @@ async function update() {
     const buffer = grids[current];
     game.process(grid.state, buffer.state);
 
-    const canvas = document.getElementById('github');
+    const canvas = <HTMLCanvasElement>document.getElementById('github');
     canvas.width = vw;
     canvas.height = vh;
     const context = canvas.getContext('2d');
+    if (context == null) {
+      console.log('Canvas context is null');
+      return;
+    }
     const cw = columns;
     const ch = rows;
 

@@ -205,15 +205,17 @@ open https://github-of-life.herokuapp.com/
 * Heroku container-registry-and-runtime [here](https://devcenter.heroku.com/articles/container-registry-and-runtime)
 * parcel-plugin-static-files-copy [here](https://github.com/elwin013/parcel-reporter-static-files-copy)
 * How to copy static files [here](https://stackoverflow.com/questions/63102658/how-to-serve-a-json-file-with-parcel-without-bundling-it)
-* https://kentcdodds.com/blog/using-fetch-with-type-script
-* https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image
-* https://getbootstrap.com/docs/5.0/getting-started/parcel/
-* https://github.com/GoogleContainerTools/container-structure-test
+* Using fetch with TypeScript [here](https://kentcdodds.com/blog/using-fetch-with-type-script)
+* Summary Card with Large Image [here](https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/)summary-card-with-large-image
+* Learn how to include Bootstrap in your project using Parcel. [here](https://getbootstrap.com/docs/5.0/getting-started/parcel/)
+* GoogleContainerTools/container-structure-test [here](https://github.com/GoogleContainerTools/container-structure-test)
 * https://github.com/chrisguest75/docker_build_examples/tree/master/33_label_metadata
 * https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#onpushpull_requestpaths
 * https://www.npmjs.com/package/jest-junit
 * Heroku github actions https://dev.to/heroku/deploying-to-heroku-from-github-actions-29ej
 * https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md
+
+### Semgrep
 * Semgrep rules repository [here](https://github.com/returntocorp/semgrep-rules)
 * https://semgrep.dev/docs/semgrep-ci/sample-ci-configs/#github-actions
 https://github.com/marketplace/actions/semgrep-action
@@ -221,4 +223,11 @@ https://github.com/marketplace/actions/semgrep-action
 * Filtering rules is not supported
 https://github.com/returntocorp/semgrep/issues/2530
 https://github.com/returntocorp/semgrep-action/pull/319
-https://www.npmjs.com/package/better-npm-audit
+
+
+
+* Better NPM Audit [here](https://www.npmjs.com/package/better-npm-audit)
+
+### Documentation
+
+* A documentation generator for TypeScript projects. [here](https://typedoc.org/)

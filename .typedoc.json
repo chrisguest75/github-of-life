@@ -1,0 +1,10 @@
+{
+    "entryPoints": ["src/main.ts","src/cellfile.ts","src/game.ts","src/grid.ts"],
+    "exclude": ["dist"],
+    "excludeExternals": true,
+    "includeVersion": true,
+    "theme": "default",
+    "out": "docs",
+    "excludePrivate": false,
+    "excludeProtected": false
+}
