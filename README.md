@@ -1,12 +1,14 @@
 # README
 
 [![Github of Life - CI](https://github.com/chrisguest75/github-of-life/actions/workflows/ci-github-of-life.yaml/badge.svg)](https://github.com/chrisguest75/github-of-life/actions/workflows/ci-github-of-life.yaml)  
-  
+
+[![Repository](https://skillicons.dev/icons?i=docker,nginx,bash,linux,html,typescript,jest,vscode)](https://skillicons.dev)
+
 Demonstrate a full screen game of life using github like tiles.  
 
-NOTE: This was based on a folder from this repo [https://github.com/chrisguest75/bootstrap](https://github.com/chrisguest75/bootstrap)
+ℹ️ NOTE: This was based on a folder from this repo [chrisguest75/bootstrap](https://github.com/chrisguest75/bootstrap)
 
-TODO:
+📝 TODO:
 
 * Split the actions pipeline into tasks rather than steps
 * danger.js
@@ -23,7 +25,7 @@ TODO:
 
 Conways game of life [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)  
 
-## Grab cells files
+## 📲 Grab cells files
 
 We use the public pattern repository.  
 
@@ -47,7 +49,7 @@ cd ./scrape-cells
 ./create-index.sh
 ```
 
-## Run it
+## ⚡️ Run it
 
 ```sh
 npm install
@@ -61,7 +63,7 @@ npm run start:browser
 npm run clean:build
 ```
 
-## How it was built
+## 🏠 How it was built
 
 ```sh
 npm init -y  
@@ -121,13 +123,12 @@ Add typedoc
 npm install --savedev typedoc           
 ```
 
-
 ```sh
 # create ico file
 magick -density 128x128 -background none ./static/favicon.png -resize 128x128 ./static/favicon.ico
 ```
 
-## Configure Deploy to heroku
+## 📋 Configure Deploy to heroku
 
 ```sh
 # open heroku dashboard and create a github-of-life app.
@@ -138,7 +139,7 @@ heroku container:login
 heroku authorizations:create       
 ```
 
-## Using npm scripts
+## 👨‍💻 Using npm scripts
 
 ```sh
 # lint the code
@@ -163,18 +164,15 @@ npm run deploy
 npm run browse:live
 ```
 
-## Scanning Prereqs
+## 🔍 Scanning Prereqs
 
 ```sh
 brew install container-structure-test
 brew install semgrep
 brew install dive hadolint dockle
-
-
-
 ```
 
-## Manual commands for local troubleshooting
+## 🔍 Manual commands for local troubleshooting
 
 ```sh
 # test locally
@@ -203,7 +201,7 @@ heroku container:release web -a github-of-life
 open https://github-of-life.herokuapp.com/
 ```
 
-## Resources
+## 👀 Resources
 
 * Heroku CLI [here](https://devcenter.heroku.com/articles/heroku-cli)
 * Deploy Heroku [here](https://dashboard.heroku.com/apps/leaving-conde/deploy/heroku-container)
@@ -222,14 +220,12 @@ open https://github-of-life.herokuapp.com/
 
 ### Semgrep
 * Semgrep rules repository [here](https://github.com/returntocorp/semgrep-rules)
-* https://semgrep.dev/docs/semgrep-ci/sample-ci-configs/#github-actions
-https://github.com/marketplace/actions/semgrep-action
+* Semgrepping github actions [here](https://semgrep.dev/docs/semgrep-ci/sample-ci-configs/#github-actions)
+* Semgrep github action [here](https://github.com/marketplace/actions/semgrep-action)
 
 * Filtering rules is not supported
 https://github.com/returntocorp/semgrep/issues/2530
 https://github.com/returntocorp/semgrep-action/pull/319
-
-
 
 * Better NPM Audit [here](https://www.npmjs.com/package/better-npm-audit)
 
